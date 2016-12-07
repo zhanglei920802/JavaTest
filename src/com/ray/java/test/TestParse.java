@@ -5,7 +5,8 @@ package com.ray.java.test;
  */
 public class TestParse {
     public static void main(String[] args) {
-        Long cityID = Long.parseLong(String.valueOf("-1L"));
+        Long cityID = Long.parseLong(String.valueOf("-1"));
         System.out.println("cityID:" + cityID);
+        System.out.println(-1L == cityID);
     }
 }
