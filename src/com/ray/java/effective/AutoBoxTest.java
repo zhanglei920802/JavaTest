@@ -1,3 +1,5 @@
+package com.ray.java.effective;
+
 import java.lang.String;
 
 /**
