@@ -1,6 +1,5 @@
 package com.ray.java.test;
 
-import com.intellij.util.containers.ArrayListSet;
 
 import java.io.File;
 import java.io.FileReader;
@@ -10,6 +9,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -19,8 +19,8 @@ import java.util.regex.Pattern;
  * 将站点转为顶级域名，并除去重复值
  */
 public class GetTopDomain {
-    static final StringBuilder builder = new StringBuilder("(?<=http://|\\.)[^.]*?\\.")
-            .append("(gov.cn|com.cn|.name|com|cn|net|org|biz|info|cc|tv)");
+    static final StringBuilder builder = new StringBuilder("[^.]*?\\.")
+            .append("(gov.cn|com.cn|name|com.tw|co.id|co.jp|com.au|asia|com|ca|cn|net|org|biz|info|cc|tv)");
     static Pattern sTopAddressDomain = Pattern.compile(builder.toString(), Pattern.CASE_INSENSITIVE);
     public static final Pattern IP_ADDRESS
             = Pattern.compile(
@@ -29,16 +29,19 @@ public class GetTopDomain {
                     + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
                     + "|[1-9][0-9]|[0-9]))");
 
-    static Set<String> arraySet = new ArrayListSet<>();
+    static Set<String> arraySet = new HashSet<>();
     static List<String> sArrayListSet = new ArrayList<>();
 
     public static void main(String[] args) {
-        //1.将文件中的内容保存list中
-        parseList(sArrayListSet);
-        //2.读数据进行处理
-        processData(sArrayListSet, arraySet);
-        //3.写入文件
-        writeFile(arraySet);
+//        //1.将文件中的内容保存list中
+//        parseList(sArrayListSet);
+//        //2.读数据进行处理
+//        processData(sArrayListSet, arraySet);
+//        //3.写入文件
+//        writeFile(arraySet);
+        //(?<=http://|\.)[^.]*?\.(gov.cn|com.cn|.name|com|cn|net|org|biz|info|cc|tv)
+        String host = "appledaily.com.tw";
+        System.out.println(String.format("host[%s],topDomain[%s]", host,getTopDomain(host)));
     }
 
     private static void writeFile(Set<String> arraySet) {
@@ -119,7 +122,7 @@ public class GetTopDomain {
 
             Matcher matcher = sTopAddressDomain.matcher(host);
             matcher.find();
-            String topAddress = matcher.group();
+            String topAddress = matcher.group(0);
             return topAddress;
         } catch (Exception e) {
             return host;
