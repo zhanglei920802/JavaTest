@@ -2,7 +2,7 @@ package com.ray.java.net.jcip.examples;
 
 import java.util.concurrent.*;
 import static java.util.concurrent.Executors.newScheduledThreadPool;
-import static net.jcip.examples.LaunderThrowable.launderThrowable;
+//import static net.jcip.examples.LaunderThrowable.launderThrowable;
 
 /**
  * TimedRun2
@@ -29,8 +29,8 @@ public class TimedRun2 {
             }
 
             void rethrow() {
-                if (t != null)
-                    throw launderThrowable(t);
+                if (t != null){}
+                    //throw launderThrowable(t);
             }
         }
 

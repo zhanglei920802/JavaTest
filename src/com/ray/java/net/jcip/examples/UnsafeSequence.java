@@ -18,4 +18,11 @@ public class UnsafeSequence {
     public int getNext() {
         return value++;
     }
+
+    public static void main(String[] args) {
+        UnsafeSequence unsafeSequence = new UnsafeSequence();
+        for (int i = 0; i < 100; i++) {
+            new Thread(() -> System.out.print(unsafeSequence.getNext()));
+        }
+    }
 }

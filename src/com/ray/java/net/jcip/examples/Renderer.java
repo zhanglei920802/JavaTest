@@ -2,7 +2,7 @@ package com.ray.java.net.jcip.examples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import static net.jcip.examples.LaunderThrowable.launderThrowable;
+//import static net.jcip.examples.LaunderThrowable.launderThrowable;
 
 /**
  * Renderer
@@ -40,7 +40,7 @@ public abstract class Renderer {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } catch (ExecutionException e) {
-            throw launderThrowable(e.getCause());
+            //throw launderThrowable(e.getCause());
         }
     }
 

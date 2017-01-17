@@ -2,7 +2,7 @@ package com.ray.java.net.jcip.examples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import static net.jcip.examples.LaunderThrowable.launderThrowable;
+//import static net.jcip.examples.LaunderThrowable.launderThrowable;
 
 /**
  * FutureRenderer
@@ -39,7 +39,7 @@ public abstract class FutureRenderer {
             // We don't need the result, so cancel the task too
             future.cancel(true);
         } catch (ExecutionException e) {
-            throw launderThrowable(e.getCause());
+            //throw launderThrowable(e.getCause());
         }
     }
 
