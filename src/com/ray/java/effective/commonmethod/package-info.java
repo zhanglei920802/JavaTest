@@ -3,7 +3,6 @@
  */
 package com.ray.java.effective.commonmethod;
 /**
- * TODO
  * 需要着重看下
  * <p>
  * Effective Java 第二章测试

@@ -1,7 +1,7 @@
 package com.ray.java.net.jcip.examples;
 
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.Semaphore;
 
 /**
  * BoundedHashSet

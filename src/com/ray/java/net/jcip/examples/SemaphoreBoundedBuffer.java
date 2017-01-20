@@ -1,8 +1,8 @@
 package com.ray.java.net.jcip.examples;
 
-import java.util.concurrent.*;
-
 import net.jcip.annotations.*;
+
+import java.util.concurrent.Semaphore;
 
 /**
  * BoundedBuffer
