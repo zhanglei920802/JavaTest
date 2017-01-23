@@ -2,7 +2,7 @@ package com.ray.java.net.jcip.examples;
 
 /**
  * LeftRightDeadlock
- *
+ * <p>
  * Simple lock-ordering deadlock
  *
  * @author Brian Goetz and Tim Peierls
@@ -28,8 +28,24 @@ public class LeftRightDeadlock {
     }
 
     void doSomething() {
+        try {
+            Thread.sleep(2 * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     void doSomethingElse() {
+        try {
+            Thread.sleep(2 * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        LeftRightDeadlock deadlock = new LeftRightDeadlock();
+        new Thread(() -> deadlock.leftRight()).start();
+        new Thread(() -> deadlock.rightLeft()).start();
     }
 }

@@ -1,7 +1,12 @@
 package com.ray.java.net.jcip.examples;
 
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 //import static net.jcip.examples.LaunderThrowable.launderThrowable;
 
 /**
@@ -16,23 +21,22 @@ public abstract class FutureRenderer {
 
     void renderPage(CharSequence source) {
         final List<ImageInfo> imageInfos = scanForImageInfo(source);
-        Callable<List<ImageData>> task =
-                new Callable<List<ImageData>>() {
-                    public List<ImageData> call() {
-                        List<ImageData> result = new ArrayList<ImageData>();
-                        for (ImageInfo imageInfo : imageInfos)
-                            result.add(imageInfo.downloadImage());
-                        return result;
-                    }
-                };
+        Callable<List<ImageData>> task = () -> {
+            List<ImageData> result = new ArrayList<>();
+            for (ImageInfo imageInfo : imageInfos) {
+                result.add(imageInfo.downloadImage());
+            }
+            return result;
+        };
 
         Future<List<ImageData>> future = executor.submit(task);
         renderText(source);
 
         try {
             List<ImageData> imageData = future.get();
-            for (ImageData data : imageData)
+            for (ImageData data : imageData) {
                 renderImage(data);
+            }
         } catch (InterruptedException e) {
             // Re-assert the thread's interrupted status
             Thread.currentThread().interrupt();

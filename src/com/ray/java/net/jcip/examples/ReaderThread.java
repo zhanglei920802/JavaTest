@@ -21,15 +21,18 @@ public class ReaderThread extends Thread {
         this.in = socket.getInputStream();
     }
 
+
+    @Override
     public void interrupt() {
         try {
-            socket.close();
+            socket.close();//关闭套接字
         } catch (IOException ignored) {
         } finally {
             super.interrupt();
         }
     }
 
+    @Override
     public void run() {
         try {
             byte[] buf = new byte[BUFSZ];

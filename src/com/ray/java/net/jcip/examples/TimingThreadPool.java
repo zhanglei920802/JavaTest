@@ -8,6 +8,8 @@ import java.util.logging.*;
  * TimingThreadPool
  * <p/>
  * Thread pool extended with logging and timing
+ * <p>
+ * 统计线程池的执行时间
  *
  * @author Brian Goetz and Tim Peierls
  */
@@ -15,6 +17,15 @@ public class TimingThreadPool extends ThreadPoolExecutor {
 
     public TimingThreadPool() {
         super(1, 1, 0L, TimeUnit.SECONDS, null);
+    }
+
+    public TimingThreadPool(int corePoolSize,
+            int maximumPoolSize,
+            long keepAliveTime,
+            TimeUnit unit,
+            BlockingQueue<Runnable> workQueue) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
+                new MyThreadFactory("myThreadPool"), (r, executor) -> System.out.println("Execute Abort"));
     }
 
     private final ThreadLocal<Long> startTime = new ThreadLocal<Long>();
@@ -47,6 +58,31 @@ public class TimingThreadPool extends ThreadPoolExecutor {
                     totalTime.get() / numTasks.get()));
         } finally {
             super.terminated();
+        }
+    }
+
+    public static void main(String[] args) {
+        TimingThreadPool threadPool = new TimingThreadPool(10,//最少线程数
+                12,//最大线程数
+                5L,//5s
+                TimeUnit.MILLISECONDS,//TimeUnit
+                new LinkedBlockingQueue<>()//BlockQueue,default
+        );
+
+        for (int i = 0; i < 50; i++) {
+            final int threadIndex = i;
+            threadPool.execute(() -> {
+                //code
+                Thread.currentThread().setName("thread" + threadIndex);
+                System.out.println("thread" + threadIndex + "running");
+                try {
+                    Thread.sleep(3 * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("thread" + threadIndex + "end");
+            });
         }
     }
 }

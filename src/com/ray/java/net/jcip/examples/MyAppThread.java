@@ -12,7 +12,7 @@ import java.util.logging.*;
  */
 public class MyAppThread extends Thread {
     public static final String DEFAULT_NAME = "MyAppThread";
-    private static volatile boolean debugLifecycle = false;
+    private static volatile boolean debugLifecycle = true;
     private static final AtomicInteger created = new AtomicInteger();
     private static final AtomicInteger alive = new AtomicInteger();
     private static final Logger log = Logger.getAnonymousLogger();
@@ -23,25 +23,19 @@ public class MyAppThread extends Thread {
 
     public MyAppThread(Runnable runnable, String name) {
         super(runnable, name + "-" + created.incrementAndGet());
-        setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            public void uncaughtException(Thread t,
-                                          Throwable e) {
-                log.log(Level.SEVERE,
-                        "UNCAUGHT in thread " + t.getName(), e);
-            }
-        });
+        setUncaughtExceptionHandler((t, e) -> log.log(Level.ALL, "UNCAUGHT in thread " + t.getName(), e));
     }
 
     public void run() {
         // Copy debug flag to ensure consistent value throughout.
         boolean debug = debugLifecycle;
-        if (debug) log.log(Level.FINE, "Created " + getName());
+        if (debug) log.log(Level.ALL, "Created " + getName());
         try {
             alive.incrementAndGet();
             super.run();
         } finally {
             alive.decrementAndGet();
-            if (debug) log.log(Level.FINE, "Exiting " + getName());
+            if (debug) log.log(Level.ALL, "Exiting " + getName());
         }
     }
 
